@@ -3,33 +3,34 @@ import datetime
 import shutil
 
 ##Enter Server Details
-#model_server = input ("Enter Model Server Name: ") #E.g. Server123
-#built_server = input("Enter newly built Server Name: ") #E.g. Server789
+model_server = "files\modelServer\etc\\"
+new_server = "files\\newServer\etc\\"
 
 
 ##Taking backup of original File Model Server
-original_file = "E:\Python\PythonScripting\\" + input("Enter file to copy: ")
-#original_file = 'new.txt' 
+file = input("Enter file to copy (without extention): ")
+original_file = new_server + file + ".txt"
 file_name, file_extension = os.path.splitext(original_file)
+new_file = file_name + '_NEW_' + datetime.datetime.now().strftime("%Y-%m-%d") + file_extension
 backup_file = file_name + '_BKP' + datetime.datetime.now().strftime("%Y-%m-%d") + file_extension
 shutil.copy(original_file, backup_file)
 print("Backup created:",backup_file)
 
     
-##Taking entries from file in model server
-source_file = open('E:\Python\PythonScripting\\model.txt', 'r')
+##Reading entries from file in model server
+source_file = open(model_server + file + '.txt', 'r')
 s_entries = source_file.readlines()
 source_file.close()
 
-##Taking entries from file in new server
+
+#T#aking entries from file in new server
 dest_file = open(original_file, 'r')
 d_entries = dest_file.readlines()
 dest_file.close
 
-
 print("Comparing entries from model server....")
 
-##Comparing and adding missing entries
+##Comparing and adding missing entries in passwd,shadow, users.ignore
 for line in s_entries[s_entries.index('unixsa\n'):]: #Checking for entries after unixsa
     if (line[0]=='#'):
         print ("Not copied (Commented):", line)
@@ -44,6 +45,6 @@ for line in s_entries[s_entries.index('unixsa\n'):]: #Checking for entries after
 
 
 ##Update missing entries in file
-file = open(original_file,"w")
+file = open(new_file,"w")
 file.writelines(d_entries)
 file.close()
