@@ -6,45 +6,60 @@ import shutil
 model_server = "files\modelServer\etc\\"
 new_server = "files\\newServer\etc\\"
 
+'''
+filex = File name with Extension
+fname = File name without Extension
+fext = File extension
+path = Complete File path
+d_entries = (List) Entries from file in New Server
+s_entries = (List) Entries from file in Model Server
+'''
 
 ##Taking backup of original File Model Server
-file = input("Enter file to copy (without extention): ")
-original_file = new_server + file + ".txt"
-file_name, file_extension = os.path.splitext(original_file)
-new_file = file_name + '_NEW_' + datetime.datetime.now().strftime("%Y-%m-%d") + file_extension
-backup_file = file_name + '_BKP' + datetime.datetime.now().strftime("%Y-%m-%d") + file_extension
-shutil.copy(original_file, backup_file)
-print("Backup created:",backup_file)
-
+def take_file_backup(filex):
+    path = new_server + filex
+    fname, fext = os.path.splitext(path)
+    new_filex = fname + '_NEW_' + datetime.datetime.now().strftime("%Y-%m-%d") + fext  #passwd_NEW_2024-12-31.txt
+    backup = fname + '_BKP_' + datetime.datetime.now().strftime("%Y-%m-%d") + fext  #passwd_BKP_2024-12-31.txt
+    shutil.copy(path, backup)
+    print("Backup created:", backup)
+    return new_filex
     
-##Reading entries from file in model server
-source_file = open(model_server + file + '.txt', 'r')
-s_entries = source_file.readlines()
-source_file.close()
-
-
-#T#aking entries from file in new server
-dest_file = open(original_file, 'r')
-d_entries = dest_file.readlines()
-dest_file.close
-
-print("Comparing entries from model server....")
+##Reading entries from file
+def read_entries(file_name):
+    file = open(file_name, 'r')
+    entries = file.readlines()
+    file.close()
+    return entries
 
 ##Comparing and adding missing entries in passwd,shadow, users.ignore
-for line in s_entries[s_entries.index('unixsa\n'):]: #Checking for entries after unixsa
-    if (line[0]=='#'):
-        print ("Not copied (Commented):", line)
-        continue
-    try:
-        d_entries.index(line)
-    except:
-        d_entries.append(line)
-        print('Added:',line)
-    else:
-        print ('Already present:',line)
-
+def compare_and_add_entries1(s_entries, d_entries):
+    for line in s_entries[s_entries.index('unixsa\n'):]: #Checking for entries after unixsa
+        if (line[0]=='#'):
+            print ("Not copied (Commented):", line)
+            continue
+        try:
+            d_entries.index(line)
+        except:
+            d_entries.append(line)
+            print('Added:',line)
+        else:
+            print ('Already present:',line)
+    return d_entries
 
 ##Update missing entries in file
-file = open(new_file,"w")
-file.writelines(d_entries)
-file.close()
+def update_entries_in_file(d_entries, new_filex):
+    file = open(new_filex,"w")
+    file.writelines(d_entries)
+    file.close()
+
+filex = input("Enter file to copy (without extention): ") + '.txt'
+new_filex = take_file_backup(filex)
+
+s_entries = read_entries(model_server + filex) ##Read entries from Model server
+d_entries = read_entries(new_server + filex)  ##Read entries from New Server
+print("Comparing entries from model server....")
+
+compare_and_add_entries1(s_entries, d_entries)
+
+update_entries_in_file (d_entries, new_filex)
