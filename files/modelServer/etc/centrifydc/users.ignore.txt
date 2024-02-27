@@ -1,0 +1,10 @@
+root
+unixsa
+ansible_svc
+madtp
+monitorsvc
+vmimport
+oracle
+#user
+oracledb
+oracledba
