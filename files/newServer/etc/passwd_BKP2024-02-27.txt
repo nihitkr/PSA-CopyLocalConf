@@ -1,8 +1,0 @@
-root
-unixsa
-ansible_svc
-madtp
-oracle
-oracledb
-nkumar10
-chronyd

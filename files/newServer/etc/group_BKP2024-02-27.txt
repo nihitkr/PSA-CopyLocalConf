@@ -1,5 +1,0 @@
-root:sdvsd:100:
-unixsa:asdvasdv:101:
-oracledb:sdvasdv:102:abc,abd,abg
-storageops:ssfeww:103:mganes,ysanam,jmitha
-engg:asaewwe:107:ahegde,saryaop
