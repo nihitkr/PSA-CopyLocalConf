@@ -1,0 +1,6 @@
+root:sdvsd:100:
+unixsa:asdvasdv:101:nkumar10,draj,rrai,ksharm
+oracledb:sdvasdv:102:abc,abd,abg
+storageops:ssfeww:103:mganes,ysanam,jmitha
+info:qwqew:104:ravi,jitu
+aaa:aedweu:105:
