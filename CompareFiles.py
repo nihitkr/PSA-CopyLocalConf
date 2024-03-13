@@ -1,5 +1,3 @@
-pip install pandas
-pip install numpy
 import os
 import datetime
 import shutil
@@ -70,7 +68,7 @@ update_entries_in_file (d_entries, new_filex)
 
 ###########################################################################
 ####COMPARISION IN GROUP FILE:
-
+'''
 
 ##Importing data from group files of both source and destination server
 sdf = pd.read_csv('files\\test\modelGroup.txt', sep=':', names=["gname", "source_uid", "source_gid", "source_mem"])
@@ -132,3 +130,4 @@ df = df_joined.to_string(index=False, header=None, na_rep='$', columns=['gname',
 df = [':'.join(ele.split()) for ele in df]
 df = [ele+"\n" for ele in df]
 df = [element.replace('$','') for element in df]
+'''
